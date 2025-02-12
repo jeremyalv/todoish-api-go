@@ -16,6 +16,8 @@ type (
 		Host         string `mapstructure:"DB_HOST"`
 		Port         string `mapstructure:"DB_PORT"`
 		URL          string
+		MaxIdleConnections int    `mapstructure:"MAX_IDLE_CONNECTIONS"`
+		MaxOpenConnections int    `mapstructure:"MAX_OPEN_CONNECTIONS"`
 	}
 )
 

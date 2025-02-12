@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"log"
 
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/jeremyalv/go-todo-api/config"
@@ -10,4 +9,5 @@ import (
 
 func main() {
 	cfg := config.LoadConfig()
+	fmt.Println("cfg loaded. ", cfg.Username)
 }
