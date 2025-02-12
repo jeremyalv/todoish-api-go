@@ -11,4 +11,6 @@ import (
 type IServices interface {
 	CreateTodo(ctx context.Context, req request.CreateTodoRequest) error
 	GetTodo(ctx context.Context, req request.GetTodoRequest) (*response.GetTodoResponse, error)
+	UpdateTodo(ctx context.Context, req request.UpdateTodoRequest) (*response.UpdateTodoResponse, error)
+	DeleteTodo(ctx context.Context, req request.DeleteTodoRequest) (*response.DeleteTodoResponse, error)
 }
