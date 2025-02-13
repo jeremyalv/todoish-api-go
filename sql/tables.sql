@@ -14,6 +14,7 @@ CREATE TABLE IF NOT EXISTS todo_app.users (
 
 CREATE TABLE IF NOT EXISTS todo_app.todos (
     `id` BINARY(16) DEFAULT (UUID_TO_BIN(UUID(), 1)), -- UUIDv1
+    `owner_id` BINARY(16) 
     `created` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     `updated` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 
@@ -23,4 +24,5 @@ CREATE TABLE IF NOT EXISTS todo_app.todos (
     `due_date` DATETIME, -- UTC TIME
 
     CONSTRAINT todos_PK PRIMARY KEY (`id`)
+    CONSTRAINT todos_FK FOREIGN KEY (`owner_id`) REFERENCES todo_app.users(`id`)
 );
