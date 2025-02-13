@@ -69,14 +69,15 @@ func (o *todoRepoImpl) getByOwner(ctx context.Context, req request.GetMyTodoRequ
 		res := new(request.Todo)
 		err := rows.Scan(&res.Id, &res.OwnerId, &res.Title, &res.Description, &res.IsCompleted, &res.DueDate)
 		if err != nil {
-			return nil, fmt.Errorf("error while scanning rows: %v", err)
+			// Errors after this point should return the `todos` slice since some values may have been read from the DB before the app throws an error
+			return todos, fmt.Errorf("error while scanning rows: %v", err)
 		}
 
 		todos = append(todos, res)
 	}
 	err = rows.Err()
 	if err != nil {
-		return nil, fmt.Errorf("encountered an error while iterating through rows: %v", err)
+		return todos, fmt.Errorf("encountered an error while iterating through rows: %v", err)
 	}
 
 	return todos, nil
@@ -92,7 +93,7 @@ func (o *todoRepoImpl) update(ctx context.Context, req request.UpdateTodoRequest
 
 	_, err = stmt.Exec(req.Title, req.Description, req.IsCompleted, req.DueDate, req.TodoId)
 	if err != nil {
-		fmt.Errorf("error while scanning rows: %v", err)
+		return fmt.Errorf("error while scanning rows: %v", err)
 	}
 	
 	return nil
