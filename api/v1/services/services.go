@@ -21,9 +21,11 @@ type service struct {
 	cfg config.Config
 }
 
-
-//
 func (s *service) WithConfig(cfg config.Config) *service {
 	s.cfg = cfg
 	return s
+}
+
+func New() *service {
+	return &service{}
 }
