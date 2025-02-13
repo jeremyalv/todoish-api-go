@@ -10,6 +10,10 @@ type CreateTodoRequest struct {
 	DueDate *time.Time `json:"dueDate,omitempty"`
 }
 
+type GetMyTodoRequest struct {
+	UserId string `json:"userId"`
+}
+
 type GetTodoRequest struct {
 	TodoId string `json:"todoId"`
 }
@@ -25,3 +29,13 @@ type UpdateTodoRequest struct {
 type DeleteTodoRequest struct {
 	TodoId string `json:"todoId"`
 }
+
+// Type to insert Todo to DB
+type Todo struct {
+	Id string `json:"id"`
+	Title string `json:"title"`
+	Description string `json:"description"`
+	IsCompleted bool `json:"isCompleted"`
+	DueDate *time.Time `json:"dueDate,omitempty"`
+}
+
