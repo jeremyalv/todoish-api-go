@@ -33,6 +33,7 @@ type DeleteTodoRequest struct {
 // Type to insert Todo to DB
 type Todo struct {
 	Id string `json:"id"`
+	OwnerId string `json:"owner_id"`
 	Title string `json:"title"`
 	Description string `json:"description"`
 	IsCompleted bool `json:"isCompleted"`
