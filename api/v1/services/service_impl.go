@@ -15,8 +15,8 @@ func (s *service) GetTodo(ctx context.Context, req request.GetTodoRequest) (*res
 	return &response.GetTodoResponse{}, nil
 }
 
-func (s *service) UpdateTodo(ctx context.Context, req request.UpdateTodoRequest) (*response.UpdateTodoResponse, error) {
-	return &response.UpdateTodoResponse{}, nil
+func (s *service) UpdateTodo(ctx context.Context, req request.UpdateTodoRequest) error {
+	return nil
 }
 
 func (s *service) DeleteTodo(ctx context.Context, req request.DeleteTodoRequest) error {
