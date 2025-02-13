@@ -9,5 +9,5 @@ import (
 
 func main() {
 	cfg := config.LoadConfig()
-	fmt.Println("cfg loaded. ", cfg.Username)
+	fmt.Println("cfg loaded. ", *cfg)
 }

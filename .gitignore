@@ -1,6 +1,7 @@
 ### Go ###
 
 pkg/logger/*
+go-todo-api
 
 # Binaries for programs and plugins
 *.exe

@@ -21,8 +21,8 @@ type (
 	}
 )
 
-func LoadConfig() Config {
-	cfg := Config{}
+func LoadConfig() *Config {
+	cfg := &Config{}
 	
 	viper.AddConfigPath("./")
 	viper.SetConfigFile(".env")
