@@ -2,37 +2,38 @@ package response
 
 import (
 	"time"
-
-	"github.com/jeremyalv/go-todo-api/models"
-	"github.com/jeremyalv/go-todo-api/models/request"
 )
 
 type CreateTodoResponse struct {
-	Code         int                        `json:"code"`
-	Message      string                     `json:"message"`
-	ResponseTime string                     `json:"responseTime"`
-	Todo         *request.CreateTodoRequest `json:"todo"`
+	Code         int    `json:"code"`
+	Message      string `json:"message"`
+	ResponseTime string `json:"responseTime"`
 }
 
 type GetTodoResponse struct {
-	OwnerId     string     `json:"ownerId"`
-	Title       string     `json:"title"`
-	Description string     `json:"description"`
-	IsCompleted bool       `json:"isCompleted"`
-	DueDate     *time.Time `json:"dueDate,omitempty"`
-	Created     *time.Time `json:"created"`
+	Code         int    `json:"code"`
+	Message      string `json:"message"`
+	ResponseTime string `json:"responseTime"`
+	Todo         *Todo  `json:"todo"`
 }
 
 type GetMyTodoResponse struct {
-	Todos []models.Todo
+	Code         int     `json:"code"`
+	Message      string  `json:"message"`
+	ResponseTime string  `json:"responseTime"`
+	Todos        []*Todo `json:"todos"`
 }
 
 type UpdateTodoResponse struct {
-	Title       string     `json:"title"`
-	Description string     `json:"description"`
-	IsCompleted bool       `json:"isCompleted"`
-	DueDate     *time.Time `json:"dueDate,omitempty"`
-	Created     *time.Time `json:"created"`
+	Code         int    `json:"code"`
+	Message      string `json:"message"`
+	ResponseTime string `json:"responseTime"`
+}
+
+type DeleteTodoResponse struct {
+	Code         int    `json:"code"`
+	Message      string `json:"message"`
+	ResponseTime string `json:"responseTime"`
 }
 
 type Todo struct {

@@ -7,6 +7,7 @@ import (
 	"github.com/jeremyalv/go-todo-api/models"
 	"github.com/jeremyalv/go-todo-api/models/request"
 	"github.com/jeremyalv/go-todo-api/models/response"
+	"github.com/jeremyalv/go-todo-api/pkg/datetime"
 	"github.com/jeremyalv/go-todo-api/pkg/validator"
 	"net/http"
 )
@@ -22,6 +23,7 @@ func (h *todoHandler) GetTodo(w http.ResponseWriter, req *http.Request) {
 
 	w.Header().Set(constants.HeaderContentType, constants.MIMEApplicationJSON)
 
+	// Instead of reading payload from req.Body (GET doesn't carry a Body field), we read the query parameters
 	queryParams := req.URL.Query()
 	todoId := queryParams.Get(constants.CtxTodoId)
 
@@ -38,18 +40,17 @@ func (h *todoHandler) GetTodo(w http.ResponseWriter, req *http.Request) {
 		}
 	}
 
-	resp, err := h.Service.GetTodo(ctx, requestObj)
+	todoResp, err := h.Service.GetTodo(ctx, requestObj)
 	if err != nil {
 		http.Error(w, constants.ErrInternalServerError, http.StatusInternalServerError)
 	}
 
 	w.WriteHeader(http.StatusOK)
 	httpResponse := &response.GetTodoResponse{
-		Title:       resp.Title,
-		Description: resp.Description,
-		IsCompleted: resp.IsCompleted,
-		DueDate:     resp.DueDate,
-		Created:     resp.Created,
+		Code:         http.StatusOK,
+		Message:      constants.MessageOk,
+		ResponseTime: datetime.GetTimeNow(),
+		Todo:         todoResp,
 	}
 
 	err = json.NewEncoder(w).Encode(&httpResponse)

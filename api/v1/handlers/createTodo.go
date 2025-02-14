@@ -40,7 +40,6 @@ func (h *todoHandler) CreateTodo(w http.ResponseWriter, req *http.Request) {
 		Code:         http.StatusCreated,
 		Message:      constants.MessageOk,
 		ResponseTime: datetime.GetTimeNow(),
-		Todo:         &payload,
 	}
 
 	w.WriteHeader(http.StatusCreated)
