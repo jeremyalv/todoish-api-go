@@ -2,6 +2,7 @@ package server
 
 import (
 	"database/sql"
+	"github.com/jeremyalv/go-todo-api/api/v1/repository"
 	"log"
 
 	"github.com/jeremyalv/go-todo-api/api/v1/handlers"
@@ -14,8 +15,8 @@ type Server struct {
 	address string
 	service services.IServices
 	handler handlers.ITodoHandler
-	cfg *config.Config
-	db *sql.DB
+	cfg     *config.Config
+	db      *sql.DB
 }
 
 func New(cfg *config.Config) *Server {
@@ -30,17 +31,22 @@ func New(cfg *config.Config) *Server {
 		log.Panic("Expecting DB connection object but received nil")
 		return nil
 	}
-	
+
+	// Initialize Server.service dependencies (e.g. repositories)
+	todoStore := repository.New(db)
+
 	svr := &Server{
 		address: addr,
-		cfg: cfg,
-		db: db,
+		cfg:     cfg,
+		db:      db,
 	}
 
 	svr.service = services.New().
-					WithConfig(*cfg)
+		WithConfig(*cfg).
+		WithTodoRepo(todoStore)
 
-	svr.handler = handlers.New().WithService(svr.service)
+	svr.handler = handlers.New().
+		WithService(svr.service)
 
 	return svr
 }

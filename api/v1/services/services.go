@@ -2,6 +2,7 @@ package services
 
 import (
 	"context"
+	"github.com/jeremyalv/go-todo-api/api/v1/repository"
 
 	"github.com/jeremyalv/go-todo-api/config"
 	"github.com/jeremyalv/go-todo-api/models/request"
@@ -18,11 +19,17 @@ type IServices interface {
 
 type service struct {
 	// In a real world app, this type would contain many more fields, e.g. logger, tasks, and other interfaces
-	cfg config.Config
+	cfg      config.Config
+	todoRepo repository.TodoRepository
 }
 
 func (s *service) WithConfig(cfg config.Config) *service {
 	s.cfg = cfg
+	return s
+}
+
+func (s *service) WithTodoRepo(todoRepo repository.TodoRepository) *service {
+	s.todoRepo = todoRepo
 	return s
 }
 
