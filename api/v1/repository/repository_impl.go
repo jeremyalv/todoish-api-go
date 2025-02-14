@@ -25,7 +25,7 @@ func (o *todoRepoImpl) save(ctx context.Context, todoObj request.Todo) (int64, e
 	if err != nil {
 		return id, fmt.Errorf("error while executing statement: %v", err)
 	}
-	
+
 	id, err = res.LastInsertId()
 	if err != nil {
 		return id, fmt.Errorf("error while reading LastInsertId: %v", err)
@@ -39,7 +39,7 @@ func (o *todoRepoImpl) get(ctx context.Context, req request.GetTodoRequest) (*re
 	rowQuery := o.DB.QueryRow(query, req.TodoId)
 	res := new(request.Todo)
 	err := rowQuery.Scan(&res.Id, &res.OwnerId, &res.Title, &res.Description, &res.IsCompleted, &res.DueDate)
-	
+
 	if err != nil {
 		if e.Is(err, sql.ErrNoRows) {
 			// In production, you would call span.RecordError and create a custom error
@@ -56,7 +56,7 @@ func (o *todoRepoImpl) get(ctx context.Context, req request.GetTodoRequest) (*re
 func (o *todoRepoImpl) getByOwner(ctx context.Context, req request.GetMyTodoRequest) ([]*request.Todo, error) {
 	// Create the result slice todos of unknown size
 	todos := []*request.Todo{}
-	
+
 	query := `SELECT id, owner_id, title, description, is_completed, due_date FROM todos WHERE owner_id=?`
 	rows, err := o.DB.Query(query, req.UserId)
 	if err != nil {
@@ -95,7 +95,7 @@ func (o *todoRepoImpl) update(ctx context.Context, req request.UpdateTodoRequest
 	if err != nil {
 		return fmt.Errorf("error while scanning rows: %v", err)
 	}
-	
+
 	return nil
 }
 

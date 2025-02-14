@@ -8,18 +8,19 @@ import (
 )
 
 type CreateTodoResponse struct {
-	Code int `json:"code"`
-	Message string `json:"message"`
-	ResponseTime string `json:"responseTime"`
-	Todo *request.CreateTodoRequest `json:"todo"`
+	Code         int                        `json:"code"`
+	Message      string                     `json:"message"`
+	ResponseTime string                     `json:"responseTime"`
+	Todo         *request.CreateTodoRequest `json:"todo"`
 }
 
 type GetTodoResponse struct {
-	Title string `json:"title"`
-	Description string `json:"description"`
-	IsCompleted bool `json:"isCompleted"`
-	DueDate *time.Time `json:"dueDate,omitempty"`
-	CreatedAt *time.Time `json:"createdAt"`
+	OwnerId     string     `json:"ownerId"`
+	Title       string     `json:"title"`
+	Description string     `json:"description"`
+	IsCompleted bool       `json:"isCompleted"`
+	DueDate     *time.Time `json:"dueDate,omitempty"`
+	CreatedAt   *time.Time `json:"createdAt"`
 }
 
 type GetMyTodoResponse struct {
@@ -27,9 +28,9 @@ type GetMyTodoResponse struct {
 }
 
 type UpdateTodoResponse struct {
-	Title string `json:"title"`
-	Description string `json:"description"`
-	IsCompleted bool `json:"isCompleted"`
-	DueDate *time.Time `json:"dueDate,omitempty"`
-	CreatedAt *time.Time `json:"createdAt"`
+	Title       string     `json:"title"`
+	Description string     `json:"description"`
+	IsCompleted bool       `json:"isCompleted"`
+	DueDate     *time.Time `json:"dueDate,omitempty"`
+	CreatedAt   *time.Time `json:"createdAt"`
 }

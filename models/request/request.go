@@ -5,9 +5,9 @@ import (
 )
 
 type CreateTodoRequest struct {
-	Title string `json:"title"`
-	Description string `json:"description"`
-	DueDate *time.Time `json:"dueDate,omitempty"`
+	Title       string     `json:"title"`
+	Description string     `json:"description"`
+	DueDate     *time.Time `json:"dueDate,omitempty"`
 }
 
 type GetMyTodoRequest struct {
@@ -19,11 +19,11 @@ type GetTodoRequest struct {
 }
 
 type UpdateTodoRequest struct {
-	TodoId string `json:"todoId"`
-	Title string `json:"title"`
-	Description string `json:"description"`
-	IsCompleted bool `json:"isCompleted"`
-	DueDate *time.Time `json:"dueDate,omitempty"`
+	TodoId      string     `json:"todoId"`
+	Title       string     `json:"title"`
+	Description string     `json:"description"`
+	IsCompleted bool       `json:"isCompleted"`
+	DueDate     *time.Time `json:"dueDate,omitempty"`
 }
 
 type DeleteTodoRequest struct {
@@ -32,11 +32,10 @@ type DeleteTodoRequest struct {
 
 // Type to insert Todo to DB
 type Todo struct {
-	Id string `json:"id"`
-	OwnerId string `json:"owner_id"`
-	Title string `json:"title"`
-	Description string `json:"description"`
-	IsCompleted bool `json:"isCompleted"`
-	DueDate *time.Time `json:"dueDate,omitempty"`
+	Id          string     `json:"id"`
+	OwnerId     string     `json:"ownerId"`
+	Title       string     `json:"title"`
+	Description string     `json:"description"`
+	IsCompleted bool       `json:"isCompleted"`
+	DueDate     *time.Time `json:"dueDate,omitempty"`
 }
-
