@@ -1,5 +1,6 @@
 CREATE DATABASE IF NOT EXISTS `todo_app`;
 
+-- Use single line commands in MySQL if the multilines fail
 CREATE TABLE IF NOT EXISTS todo_app.users (
     `id` BINARY(16) DEFAULT (UUID_TO_BIN(UUID(), 1)), -- UUIDv1
     `created` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,

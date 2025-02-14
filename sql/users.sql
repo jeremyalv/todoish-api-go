@@ -1,0 +1,4 @@
+CREATE USER IF NOT EXISTS 'username'@'%' IDENTIFIED BY 'password';
+GRANT SELECT, INSERT, UPDATE, DELETE ON todo_app.* TO 'username'@'%';
+FLUSH PRIVILEGES;
+COMMIT;
