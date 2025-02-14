@@ -6,18 +6,20 @@ import (
 	"errors"
 	"github.com/jeremyalv/go-todo-api/api/v1/repository"
 	"github.com/jeremyalv/go-todo-api/constants"
+	"github.com/jeremyalv/go-todo-api/pkg/database"
 	"log"
 	"net/http"
 	"os"
 	"os/signal"
 	"syscall"
+
+	//"syscall"
 	"time"
 
 	"github.com/gorilla/mux"
 	"github.com/jeremyalv/go
 	"github.com/jeremyalv/go-todo-api/api/v1/handlers"
 	"github.com/jeremyalv/go-todo-api/api/v1/services"
-	"github.com/jeremyalv/go-todo-api/config"
 	"github.com/gorilla/mux"
 )
 
@@ -110,5 +112,5 @@ func (s *Server) Start() {
 
 	
 	log.Printf("Server shut down gracefully")
-e
+/
 }
