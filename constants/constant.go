@@ -14,4 +14,6 @@ const (
 	ErrInternalServerError = "An error occured on the server. Please try again later."
 
 	CtxTodoId string = "todoId"
+
+	TodoEndpoint = "/api/{version}/todo/"
 )

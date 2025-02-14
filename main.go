@@ -1,13 +1,21 @@
 package main
 
 import (
-	"fmt"
+	"log"
+
+	"github.com/jeremyalv/go-todo-api/config"
+	"github.com/jeremyalv/go-todo-api/server"
 
 	_ "github.com/go-sql-driver/mysql"
-	"github.com/jeremyalv/go-todo-api/config"
 )
 
 func main() {
 	cfg := config.LoadConfig()
-	fmt.Println("cfg loaded. ", *cfg)
+
+	sv := server.New(cfg)
+	if sv == nil {
+		log.Panicf("Failed to start service")
+		return
+	}
+	sv.Start()
 }
