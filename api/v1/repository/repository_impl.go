@@ -36,10 +36,10 @@ func (o *todoRepoImpl) save(ctx context.Context, req request.CreateTodoRequest) 
 }
 
 func (o *todoRepoImpl) get(ctx context.Context, req request.GetTodoRequest) (*response.Todo, error) {
-	query := `SELECT id, owner_id, title, description, is_completed, due_date FROM todos WHERE id=?`
+	query := `SELECT id, owner_id, title, description, is_completed, due_date, created FROM todos WHERE id=?`
 	rowQuery := o.DB.QueryRow(query, req.TodoId)
 	res := new(response.Todo)
-	err := rowQuery.Scan(&res.Id, &res.OwnerId, &res.Title, &res.Description, &res.IsCompleted, &res.DueDate)
+	err := rowQuery.Scan(&res.Id, &res.OwnerId, &res.Title, &res.Description, &res.IsCompleted, &res.DueDate, &res.Created)
 
 	if err != nil {
 		if e.Is(err, sql.ErrNoRows) {

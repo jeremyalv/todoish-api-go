@@ -20,7 +20,7 @@ type GetTodoResponse struct {
 	Description string     `json:"description"`
 	IsCompleted bool       `json:"isCompleted"`
 	DueDate     *time.Time `json:"dueDate,omitempty"`
-	CreatedAt   *time.Time `json:"createdAt"`
+	Created     *time.Time `json:"created"`
 }
 
 type GetMyTodoResponse struct {
@@ -32,7 +32,7 @@ type UpdateTodoResponse struct {
 	Description string     `json:"description"`
 	IsCompleted bool       `json:"isCompleted"`
 	DueDate     *time.Time `json:"dueDate,omitempty"`
-	CreatedAt   *time.Time `json:"createdAt"`
+	Created     *time.Time `json:"created"`
 }
 
 type Todo struct {
@@ -42,4 +42,5 @@ type Todo struct {
 	Description string     `json:"description"`
 	IsCompleted bool       `json:"isCompleted"`
 	DueDate     *time.Time `json:"dueDate,omitempty"`
+	Created     *time.Time `json:"created"`
 }

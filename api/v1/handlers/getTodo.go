@@ -49,7 +49,7 @@ func (h *todoHandler) GetTodo(w http.ResponseWriter, req *http.Request) {
 		Description: resp.Description,
 		IsCompleted: resp.IsCompleted,
 		DueDate:     resp.DueDate,
-		CreatedAt:   resp.CreatedAt,
+		Created:     resp.Created,
 	}
 
 	err = json.NewEncoder(w).Encode(&httpResponse)
