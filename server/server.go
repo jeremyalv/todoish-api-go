@@ -13,14 +13,12 @@ import (
 	"os/signal"
 	"syscall"
 
-	//"syscall"
 	"time"
 
 	"github.com/gorilla/mux"
-	"github.com/jeremyalv/go
 	"github.com/jeremyalv/go-todo-api/api/v1/handlers"
 	"github.com/jeremyalv/go-todo-api/api/v1/services"
-	"github.com/gorilla/mux"
+	"github.com/jeremyalv/go-todo-api/config"
 )
 
 type Server struct {
@@ -64,8 +62,8 @@ func New(cfg *config.Config) *Server {
 }
 
 func (s *Server) registerRoutes(router *mux.Router) {
+	v1Router := router.NewRoute().Subrouter()
 
-	
 	v1Router.HandleFunc(constants.TodoEndpoint, s.handler.CreateTodo).Methods(http.MethodPost)
 	v1Router.HandleFunc(constants.TodoEndpoint, s.handler.GetTodo).Methods(http.MethodGet)
 	v1Router.HandleFunc(constants.TodoEndpoint, s.handler.UpdateTodo).Methods(http.MethodPut)
@@ -74,43 +72,42 @@ func (s *Server) registerRoutes(router *mux.Router) {
 
 func (s *Server) Start() {
 	router := mux.NewRouter()
+	s.registerRoutes(router)
 
-	
+	httpServer := &http.Server{
 		Addr:    s.address,
-		Addr: s.address,
 		Handler: router,
+	}
 
-	
 	go func() {
 		if err := httpServer.ListenAndServe(); err != nil && !errors.Is(err, http.ErrServerClosed) {
 			log.Panicf("%v: error listening to address %s", err, s.address)
 		}
+	}()
 
-	
+	log.Printf("HTTP server started on %s", s.address)
 
-	
 	// Create channel to listen to OS signals
 	sigChan := make(chan os.Signal, 1)
+	signal.Notify(sigChan, os.Interrupt, syscall.SIGINT, syscall.SIGTERM)
 
-	
 	sig := <-sigChan
+	log.Printf("%s signal caught", sig)
 
 	ctx, cancel := context.WithTimeout(context.Background(), time.Duration(s.cfg.GracefulServerTimeoutInSeconds)*time.Second)
-	ctx, cancel := context.WithTimeout(context.Background(), time.Duration(s.cfg.GracefulServerTimeoutInSeconds) * time.Second)
+	defer cancel()
 
-	
+	log.Printf("Shutting down server")
 
-	
 	// Gracefully shut down the server
 	if err := httpServer.Shutdown(ctx); err != nil {
 		log.Printf("Error shutting down server")
+	}
 
-	
 	// Resource cleanup
 	if err := s.db.Close(); err != nil {
 		log.Printf("Error in closing db connection")
+	}
 
-	
 	log.Printf("Server shut down gracefully")
-/
 }
