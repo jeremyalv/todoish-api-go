@@ -3,6 +3,7 @@ package repository
 import (
 	"context"
 	"database/sql"
+	"github.com/jeremyalv/go-todo-api/models/response"
 
 	"github.com/jeremyalv/go-todo-api/models/request"
 )
@@ -13,11 +14,10 @@ type todoRepoImpl struct {
 
 type TodoRepository interface {
 	Save(ctx context.Context, obj request.Todo) (int64, error)
-	Get(ctx context.Context, req request.GetTodoRequest) (*request.Todo, error)
+	Get(ctx context.Context, req request.GetTodoRequest) (*response.Todo, error)
 	GetUserTodos(ctx context.Context, req request.GetMyTodoRequest) ([]*request.Todo, error)
 	Update(ctx context.Context, req request.UpdateTodoRequest) error
 	Delete(ctx context.Context, req request.DeleteTodoRequest) error
-
 }
 
 func New(db *sql.DB) *todoRepoImpl {
@@ -30,7 +30,7 @@ func (o *todoRepoImpl) Save(ctx context.Context, obj request.Todo) (int64, error
 	return o.save(ctx, obj)
 }
 
-func (o *todoRepoImpl) Get(ctx context.Context, req request.GetTodoRequest) (*request.Todo, error) {
+func (o *todoRepoImpl) Get(ctx context.Context, req request.GetTodoRequest) (*response.Todo, error) {
 	return o.get(ctx, req)
 }
 

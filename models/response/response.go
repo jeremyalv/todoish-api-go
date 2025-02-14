@@ -34,3 +34,12 @@ type UpdateTodoResponse struct {
 	DueDate     *time.Time `json:"dueDate,omitempty"`
 	CreatedAt   *time.Time `json:"createdAt"`
 }
+
+type Todo struct {
+	Id          string     `json:"id"`
+	OwnerId     string     `json:"ownerId"`
+	Title       string     `json:"title"`
+	Description string     `json:"description"`
+	IsCompleted bool       `json:"isCompleted"`
+	DueDate     *time.Time `json:"dueDate,omitempty"`
+}

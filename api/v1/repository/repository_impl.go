@@ -5,6 +5,7 @@ import (
 	"database/sql"
 	e "errors"
 	"fmt"
+	"github.com/jeremyalv/go-todo-api/models/response"
 
 	"github.com/jeremyalv/go-todo-api/models/request"
 )
@@ -34,10 +35,10 @@ func (o *todoRepoImpl) save(ctx context.Context, todoObj request.Todo) (int64, e
 	return id, nil
 }
 
-func (o *todoRepoImpl) get(ctx context.Context, req request.GetTodoRequest) (*request.Todo, error) {
+func (o *todoRepoImpl) get(ctx context.Context, req request.GetTodoRequest) (*response.Todo, error) {
 	query := `SELECT id, owner_id, title, description, is_completed, due_date FROM todos WHERE id=?`
 	rowQuery := o.DB.QueryRow(query, req.TodoId)
-	res := new(request.Todo)
+	res := new(response.Todo)
 	err := rowQuery.Scan(&res.Id, &res.OwnerId, &res.Title, &res.Description, &res.IsCompleted, &res.DueDate)
 
 	if err != nil {
