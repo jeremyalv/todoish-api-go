@@ -6,6 +6,7 @@ import (
 	"github.com/jeremyalv/go-todo-api/models/response"
 	"github.com/jeremyalv/go-todo-api/pkg/datetime"
 	"io"
+	"log"
 	"net/http"
 
 	"github.com/jeremyalv/go-todo-api/constants"
@@ -22,10 +23,12 @@ func (h *todoHandler) UpdateTodo(w http.ResponseWriter, req *http.Request) {
 	payload := request.UpdateTodoRequest{}
 	body, err := io.ReadAll(req.Body)
 	if err != nil {
+		log.Printf("ERROR: %v", err)
 		http.Error(w, constants.ErrBadRequest, http.StatusBadRequest)
 	}
 	err = json.Unmarshal(body, &payload)
 	if err != nil {
+		log.Printf("ERROR: %v", err)
 		http.Error(w, constants.ErrBadRequest, http.StatusBadRequest)
 	}
 
@@ -33,6 +36,7 @@ func (h *todoHandler) UpdateTodo(w http.ResponseWriter, req *http.Request) {
 
 	err = h.Service.UpdateTodo(ctx, payload)
 	if err != nil {
+		log.Printf("ERROR: %v", err)
 		http.Error(w, constants.ErrInternalServerError, http.StatusInternalServerError)
 	}
 
@@ -45,6 +49,7 @@ func (h *todoHandler) UpdateTodo(w http.ResponseWriter, req *http.Request) {
 	w.WriteHeader(http.StatusOK)
 	err = json.NewEncoder(w).Encode(res)
 	if err != nil {
+		log.Printf("ERROR: %v", err)
 		http.Error(w, constants.ErrInternalServerError, http.StatusInternalServerError)
 	}
 }

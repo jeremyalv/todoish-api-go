@@ -4,17 +4,17 @@ import (
 	"context"
 	"encoding/json"
 	"github.com/jeremyalv/go-todo-api/constants"
-	"github.com/jeremyalv/go-todo-api/models"
 	"github.com/jeremyalv/go-todo-api/models/request"
 	"github.com/jeremyalv/go-todo-api/models/response"
 	"github.com/jeremyalv/go-todo-api/pkg/datetime"
-	"github.com/jeremyalv/go-todo-api/pkg/validator"
+	"log"
 	"net/http"
 )
 
 func (h *todoHandler) GetTodo(w http.ResponseWriter, req *http.Request) {
 	if req.Method != http.MethodGet {
 		http.Error(w, constants.ErrInvalidMethod, http.StatusMethodNotAllowed)
+		return
 	}
 
 	// In production apps, this Context should be return value of some relevant process prior to this method's business logic
@@ -31,18 +31,22 @@ func (h *todoHandler) GetTodo(w http.ResponseWriter, req *http.Request) {
 		TodoId: todoId,
 	}
 
-	var todoValidate models.TodoValidator
-	if todoId != "" {
-		todoValidate.TodoId = todoId
-		validateTodoErr := validator.ValidateRequest(todoValidate)
-		if validateTodoErr != nil {
-			http.Error(w, constants.ErrPreconditionFailed, http.StatusPreconditionFailed)
-		}
-	}
+	//var todoValidate models.TodoValidator
+	//if todoId != "" {
+	//	todoValidate.TodoId = todoId
+	//	validateTodoErr := validator.ValidateRequest(todoValidate)
+	//	if validateTodoErr != nil {
+	//		log.Printf("ERROR: %v", validateTodoErr)
+	//		http.Error(w, constants.ErrPreconditionFailed, http.StatusPreconditionFailed)
+	//		return
+	//	}
+	//}
 
 	todoResp, err := h.Service.GetTodo(ctx, requestObj)
 	if err != nil {
+		log.Printf("ERROR: %v", err)
 		http.Error(w, constants.ErrInternalServerError, http.StatusInternalServerError)
+		return
 	}
 
 	w.WriteHeader(http.StatusOK)
@@ -55,6 +59,8 @@ func (h *todoHandler) GetTodo(w http.ResponseWriter, req *http.Request) {
 
 	err = json.NewEncoder(w).Encode(&httpResponse)
 	if err != nil {
+		log.Printf("ERROR: %v", err)
 		http.Error(w, constants.ErrInternalServerError, http.StatusInternalServerError)
+		return
 	}
 }

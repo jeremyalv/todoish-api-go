@@ -6,9 +6,9 @@ import (
 	e "errors"
 	"fmt"
 
-	"github.com/jeremyalv/go-todo-api/models/response"
 	"github.com/jeremyalv/go-todo-api/models/request"
-	"github.com/google/uuid"
+	"github.com/jeremyalv/go-todo-api/models/response"
+	uuidHelper "github.com/jeremyalv/go-todo-api/pkg/uuid"
 )
 
 func (o *todoRepoImpl) save(ctx context.Context, req request.CreateTodoRequest) (int64, error) {
@@ -22,9 +22,9 @@ func (o *todoRepoImpl) save(ctx context.Context, req request.CreateTodoRequest) 
 	defer stmt.Close()
 
 	// Parse OwnerId to BINARY(16)
-	parsedOwnerId, err := uuid.Parse(req.OwnerId)
+	parsedOwnerId, err := uuidHelper.StringToUUID(req.OwnerId)
 	if err != nil {
-		return id, fmt.Errorf("error while parsing OwnerId field to UUID")
+		return id, err
 	}
 
 	res, err := stmt.Exec(
@@ -43,11 +43,16 @@ func (o *todoRepoImpl) save(ctx context.Context, req request.CreateTodoRequest) 
 }
 
 func (o *todoRepoImpl) get(ctx context.Context, req request.GetTodoRequest) (*response.Todo, error) {
-	query := `SELECT id, owner_id, title, description, is_completed, due_date, created FROM todos WHERE id=?`
-	rowQuery := o.DB.QueryRow(query, req.TodoId)
-	res := new(response.Todo)
-	err := rowQuery.Scan(&res.Id, &res.OwnerId, &res.Title, &res.Description, &res.IsCompleted, &res.DueDate, &res.Created)
+	query := `SELECT BIN_TO_UUID(id), BIN_TO_UUID(owner_id), title, description, is_completed, due_date, created FROM todos WHERE id=UUID_TO_BIN(?)`
+	parsedTodoId, err := uuidHelper.StringToUUID(req.TodoId)
 
+	if err != nil {
+		return nil, err
+	}
+	rowQuery := o.DB.QueryRow(query, parsedTodoId)
+	res := new(response.Todo)
+
+	err = rowQuery.Scan(&res.Id, &res.OwnerId, &res.Title, &res.Description, &res.IsCompleted, &res.DueDate, &res.Created)
 	if err != nil {
 		if e.Is(err, sql.ErrNoRows) {
 			// In production, you would call span.RecordError and create a custom error
@@ -65,7 +70,7 @@ func (o *todoRepoImpl) getByOwner(ctx context.Context, req request.GetMyTodoRequ
 	// Create the result slice todos of unknown size
 	todos := []*request.Todo{}
 
-	query := `SELECT id, owner_id, title, description, is_completed, due_date FROM todos WHERE owner_id=?`
+	query := `SELECT BIN_TO_UUID(id), BIN_TO_UUID(owner_id), title, description, is_completed, due_date FROM todos WHERE owner_id=UUID_TO_BIN(?)`
 	rows, err := o.DB.Query(query, req.UserId)
 	if err != nil {
 		return nil, fmt.Errorf("error while querying from database: %v", err)
@@ -92,7 +97,7 @@ func (o *todoRepoImpl) getByOwner(ctx context.Context, req request.GetMyTodoRequ
 }
 
 func (o *todoRepoImpl) update(ctx context.Context, req request.UpdateTodoRequest) error {
-	query := `UPDATE todos SET title=? description=? is_completed=? due_date=? WHERE id=?`
+	query := `UPDATE todos SET title=? description=? is_completed=? due_date=? WHERE id=UUID_TO_BIN(?)`
 	stmt, err := o.DB.Prepare(query)
 	if err != nil {
 		return fmt.Errorf("error while preparing query: %v", err)
@@ -108,7 +113,7 @@ func (o *todoRepoImpl) update(ctx context.Context, req request.UpdateTodoRequest
 }
 
 func (o *todoRepoImpl) delete(ctx context.Context, req request.DeleteTodoRequest) error {
-	query := `DELETE FROM todos WHERE id=?`
+	query := `DELETE FROM todos WHERE id=UUID_TO_BIN(?)`
 	stmt, err := o.DB.Prepare(query)
 	if err != nil {
 		return fmt.Errorf("error while preparing query: %v", err)

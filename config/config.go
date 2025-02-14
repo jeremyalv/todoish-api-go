@@ -41,7 +41,7 @@ func LoadConfig() *Config {
 	}
 
 	// Set MySQL Connection URL
-	cfg.URL = fmt.Sprintf("%s:%s@tcp(%s)/%s",
+	cfg.URL = fmt.Sprintf("%s:%s@tcp(%s)/%s?parseTime=true",
 		cfg.Username,
 		cfg.Password,
 		cfg.Host,
