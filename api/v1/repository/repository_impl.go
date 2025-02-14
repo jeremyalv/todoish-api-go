@@ -6,8 +6,9 @@ import (
 	e "errors"
 	"fmt"
 
+	"github.com/jeremyalv/go-todo-api/models/response"
+	"github.com/jeremyalv/go-todo-api/models/request"
 	"github.com/google/uuid"
-	"
 )
 
 func (o *todoRepoImpl) save(ctx context.Context, req request.CreateTodoRequest) (int64, error) {
@@ -19,8 +20,8 @@ func (o *todoRepoImpl) save(ctx context.Context, req request.CreateTodoRequest) 
 		return id, fmt.Errorf("error while preparing query: %v", err)
 	}
 	defer stmt.Close()
-	
 
+	// Parse OwnerId to BINARY(16)
 	parsedOwnerId, err := uuid.Parse(req.OwnerId)
 	if err != nil {
 		return id, fmt.Errorf("error while parsing OwnerId field to UUID")
