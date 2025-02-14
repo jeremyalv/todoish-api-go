@@ -11,8 +11,13 @@ func (s *service) CreateTodo(ctx context.Context, req request.CreateTodoRequest)
 	return nil
 }
 
-func (s *service) GetTodo(ctx context.Context, req request.GetTodoRequest) (*response.GetTodoResponse, error) {
-	return &response.GetTodoResponse{}, nil
+func (s *service) GetTodo(ctx context.Context, req request.GetTodoRequest) (*response.Todo, error) {
+	todo, err := s.todoRepo.Get(ctx, req)
+	if err != nil {
+		return nil, err
+	}
+
+	return todo, nil
 }
 
 func (s *service) UpdateTodo(ctx context.Context, req request.UpdateTodoRequest) error {
@@ -22,4 +27,3 @@ func (s *service) UpdateTodo(ctx context.Context, req request.UpdateTodoRequest)
 func (s *service) DeleteTodo(ctx context.Context, req request.DeleteTodoRequest) error {
 	return nil
 }
-
