@@ -10,7 +10,7 @@ import (
 	"github.com/jeremyalv/go-todo-api/models/request"
 )
 
-func (o *todoRepoImpl) save(ctx context.Context, todoObj request.Todo) (int64, error) {
+func (o *todoRepoImpl) save(ctx context.Context, req request.CreateTodoRequest) (int64, error) {
 	var id int64
 
 	query := `INSERT INTO todos (owner_id, title, description, is_completed, due_date) VALUES (?, ?, ?, ?, ?)`
@@ -21,7 +21,7 @@ func (o *todoRepoImpl) save(ctx context.Context, todoObj request.Todo) (int64, e
 	defer stmt.Close()
 
 	res, err := stmt.Exec(
-		todoObj.OwnerId, todoObj.Title, todoObj.Description, todoObj.IsCompleted, todoObj.DueDate,
+		req.OwnerId, req.Title, req.Description, false, req.DueDate,
 	)
 	if err != nil {
 		return id, fmt.Errorf("error while executing statement: %v", err)

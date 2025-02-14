@@ -5,6 +5,7 @@ import (
 )
 
 type CreateTodoRequest struct {
+	OwnerId     string     `json:"ownerId"`
 	Title       string     `json:"title"`
 	Description string     `json:"description"`
 	DueDate     *time.Time `json:"dueDate,omitempty"`

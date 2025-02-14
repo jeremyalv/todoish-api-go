@@ -13,7 +13,7 @@ type todoRepoImpl struct {
 }
 
 type TodoRepository interface {
-	Save(ctx context.Context, obj request.Todo) (int64, error)
+	Save(ctx context.Context, req request.CreateTodoRequest) (int64, error)
 	Get(ctx context.Context, req request.GetTodoRequest) (*response.Todo, error)
 	GetUserTodos(ctx context.Context, req request.GetMyTodoRequest) ([]*request.Todo, error)
 	Update(ctx context.Context, req request.UpdateTodoRequest) error
@@ -26,8 +26,8 @@ func New(db *sql.DB) *todoRepoImpl {
 	}
 }
 
-func (o *todoRepoImpl) Save(ctx context.Context, obj request.Todo) (int64, error) {
-	return o.save(ctx, obj)
+func (o *todoRepoImpl) Save(ctx context.Context, req request.CreateTodoRequest) (int64, error) {
+	return o.save(ctx, req)
 }
 
 func (o *todoRepoImpl) Get(ctx context.Context, req request.GetTodoRequest) (*response.Todo, error) {
