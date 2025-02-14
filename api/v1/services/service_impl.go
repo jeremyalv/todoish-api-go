@@ -8,22 +8,21 @@ import (
 )
 
 func (s *service) CreateTodo(ctx context.Context, req request.CreateTodoRequest) error {
-	return nil
+	_, err := s.todoRepo.Save(ctx, req)
+	return err
 }
 
 func (s *service) GetTodo(ctx context.Context, req request.GetTodoRequest) (*response.Todo, error) {
-	todo, err := s.todoRepo.Get(ctx, req)
-	if err != nil {
-		return nil, err
-	}
-
-	return todo, nil
+	res, err := s.todoRepo.Get(ctx, req)
+	return res, err
 }
 
 func (s *service) UpdateTodo(ctx context.Context, req request.UpdateTodoRequest) error {
-	return nil
+	err := s.todoRepo.Update(ctx, req)
+	return err
 }
 
 func (s *service) DeleteTodo(ctx context.Context, req request.DeleteTodoRequest) error {
-	return nil
+	err := s.todoRepo.Delete(ctx, req)
+	return err
 }
