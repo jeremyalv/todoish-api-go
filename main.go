@@ -1,10 +1,9 @@
 package main
 
 import (
-	"log"
-
 	"github.com/jeremyalv/go-todo-api/config"
 	"github.com/jeremyalv/go-todo-api/server"
+	"log"
 
 	_ "github.com/go-sql-driver/mysql"
 )

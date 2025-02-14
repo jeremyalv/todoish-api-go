@@ -5,23 +5,29 @@ import (
 	"database/sql"
 	e "errors"
 	"fmt"
-	"github.com/jeremyalv/go-todo-api/models/response"
 
-	"github.com/jeremyalv/go-todo-api/models/request"
+	"github.com/google/uuid"
+	"
 )
 
 func (o *todoRepoImpl) save(ctx context.Context, req request.CreateTodoRequest) (int64, error) {
 	var id int64
 
-	query := `INSERT INTO todos (owner_id, title, description, is_completed, due_date) VALUES (?, ?, ?, ?, ?)`
+	query := `INSERT INTO todos (owner_id, title, description, is_completed, due_date) VALUES (UUID_TO_BIN(?, 1), ?, ?, ?, ?)`
 	stmt, err := o.DB.Prepare(query)
 	if err != nil {
 		return id, fmt.Errorf("error while preparing query: %v", err)
 	}
 	defer stmt.Close()
+	
+
+	parsedOwnerId, err := uuid.Parse(req.OwnerId)
+	if err != nil {
+		return id, fmt.Errorf("error while parsing OwnerId field to UUID")
+	}
 
 	res, err := stmt.Exec(
-		req.OwnerId, req.Title, req.Description, false, req.DueDate,
+		parsedOwnerId, req.Title, req.Description, false, req.DueDate,
 	)
 	if err != nil {
 		return id, fmt.Errorf("error while executing statement: %v", err)

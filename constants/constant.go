@@ -15,5 +15,5 @@ const (
 
 	CtxTodoId string = "todoId"
 
-	TodoEndpoint = "/api/{version}/todo/"
+	TodoEndpoint = "/api/v1/todo/"
 )

@@ -41,6 +41,7 @@ func New(cfg *config.Config) *Server {
 		log.Panic("Expecting DB connection object but received nil")
 		return nil
 	}
+	log.Printf("Successfully connected to DB")
 
 	// Initialize Server.service dependencies (e.g. repositories)
 	todoStore := repository.New(db)
