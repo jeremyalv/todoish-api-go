@@ -13,11 +13,11 @@ import (
 )
 
 func (h *todoHandler) CreateTodo(w http.ResponseWriter, req *http.Request) {
-	w.Header().Set(constants.HeaderContentType, constants.MIMEApplicationJSON)
-	
 	if req.Method != http.MethodPost {
 		http.Error(w, constants.ErrInvalidMethod, http.StatusMethodNotAllowed)
 	}
+
+	w.Header().Set(constants.HeaderContentType, constants.MIMEApplicationJSON)
 
 	payload := request.CreateTodoRequest{}
 	body, err := io.ReadAll(req.Body)
@@ -28,21 +28,24 @@ func (h *todoHandler) CreateTodo(w http.ResponseWriter, req *http.Request) {
 	if err != nil {
 		http.Error(w, constants.ErrBadRequest, http.StatusBadRequest)
 	}
-	
+
 	ctx := context.Background()
-	
+
 	err = h.Service.CreateTodo(ctx, payload)
 	if err != nil {
 		http.Error(w, constants.ErrInternalServerError, http.StatusInternalServerError)
 	}
 
-	response := response.CreateTodoResponse{
-		Code: http.StatusCreated,
-		Message: constants.MessageOk,
+	res := response.CreateTodoResponse{
+		Code:         http.StatusCreated,
+		Message:      constants.MessageOk,
 		ResponseTime: datetime.GetTimeNow(),
-		Todo: &payload,
+		Todo:         &payload,
 	}
 
 	w.WriteHeader(http.StatusCreated)
-	json.NewEncoder(w).Encode(response)
+	err = json.NewEncoder(w).Encode(res)
+	if err != nil {
+		http.Error(w, constants.ErrInternalServerError, http.StatusInternalServerError)
+	}
 }
