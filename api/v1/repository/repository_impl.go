@@ -97,7 +97,7 @@ func (o *todoRepoImpl) getByOwner(ctx context.Context, req request.GetMyTodoRequ
 }
 
 func (o *todoRepoImpl) update(ctx context.Context, req request.UpdateTodoRequest) error {
-	query := `UPDATE todos SET title=? description=? is_completed=? due_date=? WHERE id=UUID_TO_BIN(?)`
+	query := `UPDATE todos SET title=?, description=?, is_completed=?, due_date=? WHERE id=UUID_TO_BIN(?)`
 	stmt, err := o.DB.Prepare(query)
 	if err != nil {
 		return fmt.Errorf("error while preparing query: %v", err)

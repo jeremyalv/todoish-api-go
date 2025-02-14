@@ -16,6 +16,7 @@ import (
 func (h *todoHandler) UpdateTodo(w http.ResponseWriter, req *http.Request) {
 	if req.Method != http.MethodPut {
 		http.Error(w, constants.ErrInvalidMethod, http.StatusMethodNotAllowed)
+		return
 	}
 
 	w.Header().Set(constants.HeaderContentType, constants.MIMEApplicationJSON)
@@ -25,11 +26,13 @@ func (h *todoHandler) UpdateTodo(w http.ResponseWriter, req *http.Request) {
 	if err != nil {
 		log.Printf("ERROR: %v", err)
 		http.Error(w, constants.ErrBadRequest, http.StatusBadRequest)
+		return
 	}
 	err = json.Unmarshal(body, &payload)
 	if err != nil {
 		log.Printf("ERROR: %v", err)
 		http.Error(w, constants.ErrBadRequest, http.StatusBadRequest)
+		return
 	}
 
 	ctx := context.Background()
@@ -38,6 +41,7 @@ func (h *todoHandler) UpdateTodo(w http.ResponseWriter, req *http.Request) {
 	if err != nil {
 		log.Printf("ERROR: %v", err)
 		http.Error(w, constants.ErrInternalServerError, http.StatusInternalServerError)
+		return
 	}
 
 	res := response.UpdateTodoResponse{
@@ -51,5 +55,6 @@ func (h *todoHandler) UpdateTodo(w http.ResponseWriter, req *http.Request) {
 	if err != nil {
 		log.Printf("ERROR: %v", err)
 		http.Error(w, constants.ErrInternalServerError, http.StatusInternalServerError)
+		return
 	}
 }
